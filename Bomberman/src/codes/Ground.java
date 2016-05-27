@@ -4,15 +4,17 @@ import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-public class Wall{
-	
+public class Ground {
 	private ImageIcon img;
 	private JLabel jlabel;
 	private Rectangle rectangle;
 	
-	Wall(int x, int y){
+	Ground(int x, int y){
+		this.img = new ImageIcon(getClass().getResource("/images/ground.png"));
 		this.rectangle = new Rectangle();
 		this.rectangle.setBounds(x, y, 50, 50);
+		this.jlabel = new JLabel(img);
+		this.jlabel.setBounds(this.rectangle);
 	}
 
 	public void setRectangle(Rectangle rectangle){

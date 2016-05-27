@@ -8,7 +8,7 @@ public class Principal extends JFrame{
 	private Cenario cenario;
 	private Player player;
 	private Moving moving;
-	private int wls;
+	private int wls, i, j;
 	
 	Principal(){
 		player = new Player(50, 50);
@@ -26,10 +26,14 @@ public class Principal extends JFrame{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.add(player.getJLabel());
 		this.addKeyListener(moving);
-		for(wls = 0; cenario.walls.size() > 0; wls++){
-			this.add(cenario.walls.get(wls).getJLabel());
+		//inserindo Walls no mapa
+		for(j = 0; j < this.cenario.getWalls().size(); j++){
+			this.add(this.cenario.getWalls().get(j).getJLabel());
 		}
-		this.add(cenario.getJLabel());
+		//inserindo Grounds no mapa
+		for(i = 0; i < this.cenario.getGrounds().size(); i++){
+			this.add(this.cenario.getGrounds().get(i).getJLabel());
+		}
 	}
 	
 	public static void main(String[] args){

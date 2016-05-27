@@ -9,6 +9,7 @@ public class Bomb implements Runnable
 	private Rectangle rectangle;
 	private ImageIcon imgBomb;
 	private JLabel jlabel;
+	private Explosion explosion;
 	private int explosionRange = 50;
 	
 	Bomb(int x, int y){
@@ -29,10 +30,7 @@ public class Bomb implements Runnable
 	
 	//ainda falta implementar
 	public void explode(){
-		try
-		{Thread.sleep(3000);}
-		catch(InterruptedException e)
-		{e.printStackTrace();}
+		this.explosion = new Explosion(this.rectangle.x, this.rectangle.y);
 	}
 	
 	public void increaseExplosionRange(){
