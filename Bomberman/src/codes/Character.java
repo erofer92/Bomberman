@@ -1,7 +1,6 @@
 package codes;
 
 import java.awt.Rectangle;
-import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -20,16 +19,15 @@ public class Character{
 	*/
 	private JLabel jlabel;
 	private int life = 1;
-	ArrayList<Bomb> bombs;
+	private int bombCount;
+	private int bombPlanted;
 	
 	Character(int x, int y){
-		bombs = new ArrayList<Bomb>();
 		this.rectangle = new Rectangle(x, y, 50, 50);
 		this.jlabel = new JLabel();
 		this.jlabel.setBounds(rectangle);
 		jlabel.setIcon(goDown);
 	}
-	
 	
 	//ainda preciso dos gifs goRight, goLeft, goUp e goDown
 	//por enquanto, o bomberman ficará sem movimento na imagem.
@@ -58,8 +56,16 @@ public class Character{
 		*/
 	}
 	
+	public int getBombCount(){
+		return this.bombCount;
+	}
+	
 	public JLabel getJLabel(){
 		return jlabel;
+	}
+	
+	public void setJLabel(ImageIcon icon){
+		this.jlabel.setIcon(icon);;
 	}
 	
 	public void goRight(){
@@ -94,13 +100,26 @@ public class Character{
 		return this.rectangle;
 	}
 	
-	public void kill(){
+	private void kill(){
 		this.life--;
 	}
 	
 	public boolean isAlive(){
-		if(this.life >= 1)
+		if(this.life > 0)
 			return true;
 		return false;
+	}
+	
+	public Bomb plantBomb() throws MaxBombPlantedException{
+		if(this.bombPlanted < this.bombCount){
+			this.bombPlanted++;
+			return new Bomb((int)this.getRectangle().getX(), (int)this.getRectangle().getY());
+		}
+		else
+			throw new MaxBombPlantedException();
+	}
+	
+	public void decreaseBombPlanted(){
+		this.bombPlanted--;
 	}
 }

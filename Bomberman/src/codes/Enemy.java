@@ -1,6 +1,5 @@
 package codes;
 
-
 public class Enemy extends Character{
 
 	Enemy(int x, int y){

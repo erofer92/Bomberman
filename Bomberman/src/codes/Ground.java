@@ -4,7 +4,8 @@ import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-public class Ground {
+public class Ground{
+	
 	private ImageIcon img;
 	private JLabel jlabel;
 	private Rectangle rectangle;

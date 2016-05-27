@@ -1,7 +1,6 @@
 package codes;
 
 import java.awt.Rectangle;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -44,60 +43,49 @@ public class Explosion{
 		
 	}
 	
+	public void increaseExplosionRange() throws MaxRangeReachedException{
+		if(this.explosionRange < 200)
+			this.explosionRange += 50;
+		else
+			throw new MaxRangeReachedException();
+	}
+	
+	public void decreaseExplosionRange() throws MinRangeReachedException{
+		if(this.explosionRange > 50)
+			this.explosionRange -= 50;
+		else
+			throw new MinRangeReachedException();
+	}
+	
 	public JLabel getTopExplosionJLabel() {
 		return topExplosionJLabel;
-	}
-
-	public void setTopExplosionJLabel(JLabel topExplosionJLabel) {
-		this.topExplosionJLabel = topExplosionJLabel;
 	}
 
 	public JLabel getBottomExplosionJLabel() {
 		return bottomExplosionJLabel;
 	}
 
-	public void setBottomExplosionJLabel(JLabel bottomExplosionJLabel) {
-		this.bottomExplosionJLabel = bottomExplosionJLabel;
-	}
-
 	public JLabel getLeftExplosionJLabel() {
 		return leftExplosionJLabel;
-	}
-
-	public void setLeftExplosionJLabel(JLabel leftExplosionJLabel) {
-		this.leftExplosionJLabel = leftExplosionJLabel;
 	}
 
 	public JLabel getRightExplosionJLabel() {
 		return rightExplosionJLabel;
 	}
 
-	public void setRightExplosionJLabel(JLabel rightExplosionJLabel) {
-		this.rightExplosionJLabel = rightExplosionJLabel;
-	}
-
 	public JLabel getVerticalExplosionJLabel() {
 		return verticalExplosionJLabel;
-	}
-
-	public void setVerticalExplosionJLabel(JLabel verticalExplosionJLabel) {
-		this.verticalExplosionJLabel = verticalExplosionJLabel;
 	}
 
 	public JLabel getHorizontalExplosionJLabel() {
 		return horizontalExplosionJLabel;
 	}
 
-	public void setHorizontalExplosionJLabel(JLabel horizontalExplosionJLabel) {
-		this.horizontalExplosionJLabel = horizontalExplosionJLabel;
-	}
-
 	public JLabel getCenterExplosionJLabel() {
 		return centerExplosionJLabel;
 	}
-
-	public void setCenterExplosionJLabel(JLabel centerExplosionJLabel) {
-		this.centerExplosionJLabel = centerExplosionJLabel;
+	
+	public Rectangle getRectangle(){
+		return this.rectangle;
 	}
-
 }

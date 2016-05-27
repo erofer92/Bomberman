@@ -1,32 +1,29 @@
 package codes;
 
 import java.awt.Rectangle;
+import java.io.Serializable;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-@SuppressWarnings("unused")
-public class Cenario {
+
+public class Cenario implements Serializable{
+	
+	private static final long serialVersionUID = -7476993394280368779L;
 	
 	private Rectangle rectangle;
 	private ImageIcon cenario;
 	private JLabel jlabel;
 	private ArrayList<Wall> walls;
-	private ArrayList<Enemy> enemies;
 	private ArrayList<Ground> grounds;
 	
 	Cenario(){
-		this.grounds = new ArrayList<Ground>();
 		this.walls = new ArrayList<Wall>();
-		this.enemies = new ArrayList<Enemy>();
+		this.grounds = new ArrayList<Ground>();
 		this.rectangle = new Rectangle(0, 0, 750, 650);
-		this.cenario = new ImageIcon(getClass().getResource("/images/scenario.png"));
+		//this.cenario = new ImageIcon(getClass().getResource("/images/scenario.png"));
 		this.jlabel = new JLabel(cenario);
 		this.jlabel.setBounds(rectangle);
 		putScenarioWalls();
-	}
-	public ArrayList<Enemy> getEnemies(){
-		return this.enemies;
 	}
 	
 	public ArrayList<Ground> getGrounds(){
@@ -46,8 +43,6 @@ public class Cenario {
 	}
 	
 	private void putScenarioWalls(){
-		Wall wall;
-		Ground ground;
 		int px, py, lx, ly;
 		//px e py são as posições x e y para colocar a parede.
 		//lx e ly são os números das linhas de x e y
@@ -60,15 +55,14 @@ public class Cenario {
 				else{
 					if(px == 0 || px == (this.getRectangle().getWidth() - 50) ||
 					   py == 0 || py == (this.getRectangle().getHeight() - 50) )
-						wall = new SolidWall(px, py);
+						this.walls.add(new SolidWall(px, py));
 					
 					else{
 						if(lx%2 == 0 && ly%2 == 0)
-							wall = new SolidWall(px, py);
+							this.walls.add(new SolidWall(px, py));
 						else
-							wall = new BreakableWall(px, py);
+							this.walls.add(new BreakableWall(px, py));
 					}
-					this.walls.add(wall);
 				}
 			}
 		}
