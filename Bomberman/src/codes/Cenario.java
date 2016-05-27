@@ -16,7 +16,7 @@ public class Cenario {
 	
 	Cenario(){
 		rectangle = new Rectangle(0, 0, 750, 650);
-		cenario = new ImageIcon(getClass().getResource("/projectImages/cenario.png"));
+		cenario = new ImageIcon(getClass().getResource("/images/cenario.png"));
 		jlabel = new JLabel(cenario);
 		this.jlabel.setBounds(rectangle);
 		putScenarioWalls();
