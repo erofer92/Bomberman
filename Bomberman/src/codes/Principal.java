@@ -20,7 +20,7 @@ public class Principal extends JFrame implements Serializable{
 	Principal(){
 		player = new Player(50, 50);
 		cenario = new Cenario();
-		moving = new Moving(player, cenario);
+		moving = new Moving(player, cenario, this);
 		
 		//this.setBounds(this.cenario.getRectangle());
 		this.setBounds(0, 0,

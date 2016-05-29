@@ -21,12 +21,16 @@ public class Character{
 	private int life = 1;
 	private int bombCount;
 	private int bombPlanted;
+	private int explosionRange;
 	
 	Character(int x, int y){
+		this.bombCount = 1;
+		this.bombPlanted = 0;
 		this.rectangle = new Rectangle(x, y, 50, 50);
 		this.jlabel = new JLabel();
 		this.jlabel.setBounds(rectangle);
-		jlabel.setIcon(goDown);
+		this.jlabel.setIcon(goDown);
+		this.explosionRange = 50;
 	}
 	
 	//ainda preciso dos gifs goRight, goLeft, goUp e goDown
@@ -65,7 +69,7 @@ public class Character{
 	}
 	
 	public void setJLabel(ImageIcon icon){
-		this.jlabel.setIcon(icon);;
+		this.jlabel.setIcon(icon);
 	}
 	
 	public void goRight(){
@@ -112,7 +116,6 @@ public class Character{
 	
 	public Bomb plantBomb() throws MaxBombPlantedException{
 		if(this.bombPlanted < this.bombCount){
-			this.bombPlanted++;
 			return new Bomb((int)this.getRectangle().getX(), (int)this.getRectangle().getY());
 		}
 		else

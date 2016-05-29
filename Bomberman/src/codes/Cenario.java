@@ -11,19 +11,24 @@ public class Cenario implements Serializable{
 	private static final long serialVersionUID = -7476993394280368779L;
 	
 	private Rectangle rectangle;
-	private ImageIcon cenario;
-	private JLabel jlabel;
 	private ArrayList<Wall> walls;
 	private ArrayList<Ground> grounds;
+	private ArrayList<Bomb> bombs;
 	
 	Cenario(){
 		this.walls = new ArrayList<Wall>();
 		this.grounds = new ArrayList<Ground>();
 		this.rectangle = new Rectangle(0, 0, 750, 650);
-		//this.cenario = new ImageIcon(getClass().getResource("/images/scenario.png"));
-		this.jlabel = new JLabel(cenario);
-		this.jlabel.setBounds(rectangle);
+		this.bombs = new ArrayList<Bomb>();
 		putScenarioWalls();
+	}
+	
+	public ArrayList<Bomb> getBombs(){
+		return this.bombs;
+	}
+	
+	public void addBomb(Bomb b){
+		bombs.add(b);
 	}
 	
 	public ArrayList<Ground> getGrounds(){
@@ -36,10 +41,6 @@ public class Cenario implements Serializable{
 	
 	public Rectangle getRectangle(){
 		return rectangle;
-	}
-
-	public JLabel getJLabel(){
-		return this.jlabel;
 	}
 	
 	private void putScenarioWalls(){
