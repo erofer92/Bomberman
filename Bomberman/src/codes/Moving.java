@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 
-public class Moving implements KeyListener{
+public class Moving implements KeyListener, Runnable{
 	private Player player;
 	private Cenario cenario;
 	private JFrame jframe;
@@ -17,6 +17,8 @@ public class Moving implements KeyListener{
 		this.player = player;
 		this.cenario = cenario;
 		this.jframe = jframe;
+		Thread t = new Thread(this);
+		t.start();
 	}
 	
 	private void verifyWallsAndBombs(){
@@ -136,9 +138,11 @@ public class Moving implements KeyListener{
 			case 32: //Space to Plant a Bomb
 				try {
 					Bomb b = player.plantBomb();
-					b.whereToExplode(this.cenario);
-					cenario.addBomb(b);
-					jframe.add(b.getJLabel(), 1);
+					b.whereAmI(cenario, jframe);
+					cenario.getBombs().add(b);
+					jframe.add(b.getJLabel(), 2);
+					Thread t = new Thread(b);
+					t.start();
 				}
 				catch (MaxBombPlantedException e2) {
 					System.out.println("MaxBombPlanted!");
@@ -154,5 +158,13 @@ public class Moving implements KeyListener{
 	}
 	public void keyTyped(KeyEvent e){
 		
+	}
+
+	@Override
+	public void run() {/*
+		while(true){
+			if(this.cenario.getBombs().size() <= player.plantedBombs())
+				this.player.decreaseBombPlanted();
+		}*/
 	}
 }

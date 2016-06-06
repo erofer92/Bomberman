@@ -13,5 +13,4 @@ public class Player extends Character{
 				"/images/goDown.png");
 		this.setJLabel(new ImageIcon(getClass().getResource("/images/goDown.png")));
 	}
-	
 }
