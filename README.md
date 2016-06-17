@@ -1,6 +1,19 @@
 # Bomberman
 
-Este jogo foi feito como Trabalho da disciplina de Técnicas de Programação.
+--------------------------------------------------------------
+----------------------- EM CONSTRUÇÃO ------------------------
+--------------------------------------------------------------
 
-Ainda está em construção e pretendo concluí-lo completamente,
-mesmo após a entrega. Quero deixá-lo completamente funcional.
+
+A construção do jogo deve ser baseada em:
+1 - Criar um cenário onde o tamanho da janela é quem dita a quantidade de blocos que o cenario suporta.
+2 - Sempre deixar 3 espaços iniciais no canto superior esquerdo e inferior direito para 2 jogadores
+  2.1 - O 1º jogador decidirá se o 2º será bot ou outro jogador.
+    2.1.1 - Caso o 2º seja um jogador, os controles deverão ser configurados.
+  2.2 - A parte de IA ainda não será feita, pois ainda não cursei a cadeira de IA.
+3 - As paredes quebráveis (Breakable Walls) deverão dropar itens para melhoria da bomba ou do jogador.
+  3.1 - Decidirei depois quais Buffs existirão.
+
+O jogo ainda está longe de ficar completo, pois estou trabalhando semanalmente nele.
+Quero deixá-lo completamente funcional, mas algumas partes ainda são inalcançáveis, como IA.
+Devido a isso, ele só será completamente concluído daqui a 1 ano, talvez.
