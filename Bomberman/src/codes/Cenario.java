@@ -2,17 +2,17 @@ package codes;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import javax.swing.JFrame;
 
-public class Cenario implements Runnable{
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+public class Cenario extends Thread{
 	
 	private Rectangle rectangle;
 	private ArrayList<Wall> walls;
 	private ArrayList<Ground> grounds;
 	private ArrayList<Bomb> bombs;
-	private ArrayList<Explosion> explosions;
-	private JFrame jframe;
-	private Player player;
 	
 	Cenario(){
 		this.walls = new ArrayList<Wall>();
@@ -24,28 +24,20 @@ public class Cenario implements Runnable{
 		t.start();
 	}
 	
-	public void addPlayer(Player player){
-		this.player = player;
-	}
-	
-	public ArrayList<Bomb> getBombs(){
+	public synchronized ArrayList<Bomb> getBombs(){
 		return this.bombs;
 	}
 
-	public ArrayList<Ground> getGrounds(){
+	public synchronized ArrayList<Ground> getGrounds(){
 		return this.grounds;
 	}
 	
-	public ArrayList<Wall> getWalls(){
+	public synchronized ArrayList<Wall> getWalls(){
 		return this.walls;
 	}
 	
 	public Rectangle getRectangle(){
 		return rectangle;
-	}
-	
-	public void whereAmI(JFrame jframe){
-		this.jframe = jframe;
 	}
 	
 	private void putScenarioWalls(){
@@ -55,7 +47,10 @@ public class Cenario implements Runnable{
 		
 		for(py = 0, ly = 0; py < this.getRectangle().height; py+=50, ly++){
 			for(px = 0, lx = 0; px < this.getRectangle().width; px+=50, lx++){
-				if( (px == 50 && py == 50) || (px == 50 && py == 100) || (px == 100 && py == 50) )
+				if( (px == 50 && py == 50) || (px == 50 && py == 100) || (px == 100 && py == 50)
+					|| (px == this.getRectangle().width - 150 && py == this.getRectangle().height - 100)
+					|| (px == this.getRectangle().width - 100 && py == this.getRectangle().height - 100)
+					|| (px == this.getRectangle().width - 100 && py == this.getRectangle().height - 150))
 					this.grounds.add(new Ground(px, py));
 					//não coloca parede, pois o Bomberman precisa de 3 espaços iniciais
 				else{
@@ -74,45 +69,10 @@ public class Cenario implements Runnable{
 		}
 	}
 	
-	public void removeExplodedBombs(){
-		int i;
-		if(this.bombs.size() > 0)
-			System.out.println("size if: " + this.bombs.size());
-		
-		for(i = 0; i < this.bombs.size(); i++){
-			System.out.println("size: " + this.bombs.size());
-			if(this.bombs.get(i).isExploded()){
-				this.jframe.remove(this.bombs.get(i).getJLabel());
-				System.out.println("removeu JLabel da bomba");
-			}
-		}
-	}
-	/*
-	public void removeFadedOutExplosions(){
-		int i;
-		int i2;
-		boolean removed;
-		
-		for(i = 0 ; i < this.bombs.size(); i++){
-			removed = false;
-			for(i2 = 0;	i2 < this.bombs.get(i).getExplosions().size(); i2++){
-				if(this.bombs.get(i).getExplosions().get(i2).isFaded()){
-					this.jframe.remove(this.bombs.get(i).getExplosions().remove(i2).getJLabel());
-					removed = true;
-				}
-			}
-			this.bombs.remove(i);
-			if(removed)
-				this.player.decreaseBombPlanted();
-		}
-	}*/
-	
+	// Os métodos do cenário que serão chamados no RUN serão completamente reformulados.
 	@Override
 	public void run() {
-		while(true){
-			//this.removeFadedOutExplosions();
-			this.removeExplodedBombs();
-		}
+		
 	}
 }
 

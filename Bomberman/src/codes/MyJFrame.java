@@ -1,5 +1,7 @@
 package codes;
 
+import java.awt.Point;
+
 import javax.swing.JFrame;
 
 @SuppressWarnings("serial")
@@ -11,16 +13,16 @@ public class MyJFrame extends JFrame implements Runnable{
 	private int WaG;
 	
 	public MyJFrame(){
-		player = new Player(50, 50);
+		Point p = new Point(0, 0);
+		player = new Player(p, null, "Player 1");
 		cenario = new Cenario();
 		moving = new Moving(player, cenario, this);
-		cenario.whereAmI(this);
-		cenario.addPlayer(player);
-		this.setTitle("Bomberman - 1.0v");
+		cenario.start();
+		this.setTitle("Bomberman");
 		this.setLayout(null);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setBounds(0, 0,
+		this.setBounds(10, 10,
 					  cenario.getRectangle().width + 6,
 					  cenario.getRectangle().height + 29);
 		this.add(player.getJLabel());
@@ -36,11 +38,14 @@ public class MyJFrame extends JFrame implements Runnable{
 		this.setVisible(true);
 	}
 	
+	public void stop(){
+		this.removeKeyListener(moving);
+	}
+	
 	@Override
 	public void run() {
-		while(true){
+		while(true)
 			this.repaint();
-		}
 	}
 	
 }

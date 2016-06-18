@@ -1,6 +1,8 @@
 package codes;
 
+import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -11,51 +13,43 @@ public class Character{
 	private ImageIcon goLeft;
 	private ImageIcon goUp;
 	private ImageIcon goDown;
-	/*
-	private ImageIcon goRightStop;
-	private ImageIcon goLeftStop;
-	private ImageIcon goUpStop;
-	private ImageIcon goDownStop;
-	*/
+	private ImageIcon death;
 	private JLabel jlabel;
-	private int life = 1;
+	private int life;
 	private int bombCount;
-	private int plantedBombs;
+	private String name;
+	private ArrayList<Bomb> bombs;
 	
-	public Character(int x, int y){
-		this.bombCount = 2;
-		this.plantedBombs = 0;
-		this.rectangle = new Rectangle(x, y, 50, 50);
-		this.jlabel = new JLabel();
-		this.jlabel.setBounds(rectangle);
-		this.jlabel.setIcon(goDown);
+	public Character(Point p, ImageIcon initialImage, String name){
+		this.setDefaultConfiguration(p, initialImage, name);
 	}
 	
-	//ainda preciso dos gifs goRight, goLeft, goUp e goDown
-	//por enquanto, o bomberman ficará sem movimento na imagem.
-	public void setMoveImages(String stop, String goRight, String goLeft, String goUp, String goDown){
-		this.goRight = new ImageIcon(getClass().getResource(goRight));
-		this.goLeft = new ImageIcon(getClass().getResource(goLeft));
-		this.goUp = new ImageIcon(getClass().getResource(goUp));
-		this.goDown = new ImageIcon(getClass().getResource(goDown));
-	}
-	
-	//esse método substituirá "setMoveImages" quando os gifs estiverem prontos.
-	public void setMoveImages2(String goRight, String goRightStop,
-							   String goLeft, String goLeftStop,
-							   String goUp, String goUpStop,
-							   String goDown, String goDownStop){
+	public Character(Point p, ImageIcon initialImage, String name,
+					ImageIcon goRight, ImageIcon goLeft, 
+					ImageIcon goUp,	ImageIcon goDown, 
+					ImageIcon death){
 		
-		this.goRight = new ImageIcon(getClass().getResource(goRight));
-		this.goLeft = new ImageIcon(getClass().getResource(goLeft));
-		this.goUp = new ImageIcon(getClass().getResource(goUp));
-		this.goDown = new ImageIcon(getClass().getResource(goDown));
-		/*
-		this.goRightStop = new ImageIcon(getClass().getResource(goRightStop));
-		this.goLeftStop = new ImageIcon(getClass().getResource(goLeftStop));
-		this.goUpStop = new ImageIcon(getClass().getResource(goUpStop));
-		this.goDownStop = new ImageIcon(getClass().getResource(goDownStop));
-		*/
+		this.setDefaultConfiguration(p, initialImage, name);
+		this.setImages(goRight, goLeft, goUp, goDown, death);
+	}
+	
+	public void setImages(ImageIcon goRight, ImageIcon goLeft, 
+							ImageIcon goUp,	ImageIcon goDown, 
+							ImageIcon death){
+		this.goRight = goRight;
+		this.goLeft = goLeft;
+		this.goUp = goUp;
+		this.goDown = goDown;
+		this.death = death;
+	}
+	
+	private void setDefaultConfiguration(Point p, ImageIcon initialImage, String name){
+		this.name = name;
+		this.life = 1;
+		this.bombCount = 1;
+		this.rectangle = new Rectangle(p.x, p.y, initialImage.getIconWidth(), initialImage.getIconHeight());
+		this.jlabel = new JLabel(initialImage);
+		this.jlabel.setBounds(this.rectangle);
 	}
 	
 	public int getBombCount(){
@@ -66,31 +60,27 @@ public class Character{
 		return jlabel;
 	}
 	
-	public void setJLabel(ImageIcon icon){
-		this.jlabel.setIcon(icon);
-	}
-	
 	public void goRight(){
 		this.jlabel.setIcon(goRight);
-		this.rectangle.x+=50;
+		this.rectangle.x += this.rectangle.width;
 		this.jlabel.setBounds(rectangle);
 	}
 	
 	public void goLeft(){
 		this.jlabel.setIcon(goLeft);
-		this.rectangle.x-=50;
+		this.rectangle.x -= this.rectangle.width;
 		this.jlabel.setBounds(rectangle);
 	}
 	
 	public void goUp(){
 		this.jlabel.setIcon(goUp);
-		this.rectangle.y-=50;
+		this.rectangle.y -= this.rectangle.height;
 		this.jlabel.setBounds(rectangle);
 	}
 	
 	public void goDown(){
 		this.jlabel.setIcon(goDown);
-		this.rectangle.y+=50;
+		this.rectangle.y += this.rectangle.height;
 		this.jlabel.setBounds(rectangle);
 	}
 	
@@ -102,30 +92,32 @@ public class Character{
 		return this.rectangle;
 	}
 	
-	public void kill(){
-		this.life--;
-	}
-	
 	public boolean isAlive(){
 		if(this.life > 0)
 			return true;
+		
+		this.jlabel.setIcon(this.death);
 		return false;
 	}
 	
 	public Bomb plantBomb() throws MaxBombPlantedException{
-		if(this.plantedBombs < this.bombCount){
-			this.plantedBombs++;
-			return new Bomb((int)this.getRectangle().getX(), (int)this.getRectangle().getY());
+		if(this.bombs.size() < this.bombCount){
+			Bomb b = new Bomb(this.rectangle.getLocation());
+			this.bombs.add(b);
+			return b;
 		}
-		else
-			throw new MaxBombPlantedException();
+		throw new MaxBombPlantedException();
 	}
-		
-	public void decreaseBombPlanted(){
-		this.plantedBombs--;
-	}
-
-	public int plantedBombs() {
-		return this.plantedBombs;
+	
+	public void run(){
+		int i;
+		while(this.isAlive()){
+			for(i = 0; i < this.bombs.size(); i++){
+				if(this.bombs.get(i).isExploded()){
+					this.bombs.remove(i);
+				}
+			}
+		}
+		System.out.println(this.name + " is DEAD!");
 	}
 }

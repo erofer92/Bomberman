@@ -1,10 +1,19 @@
 package codes;
 
+import java.awt.Point;
+import javax.swing.ImageIcon;
+
 public class Enemy extends Character{
 
-	Enemy(int x, int y){
-		super(x, y);
-		this.setMoveImages("stop.png", "goRight.png", "goLeft.png", "goUp.png", "goDown.png");
+	Enemy(Point p, ImageIcon initialImage, String name){
+		super(p, initialImage, name);
 	}
-	// NEED IA
+	
+	/* 
+	 * Precisa de IA
+	 * 
+	 * Talvez essa classe só seja implementada depois que eu fizer
+	 * a cadeira de Inteligência Artificial
+	 * 
+	 */
 }

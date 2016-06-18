@@ -4,25 +4,27 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 
-public class Moving implements KeyListener, Runnable{
+public class Moving implements KeyListener{
 	private Player player;
 	private Cenario cenario;
 	private JFrame jframe;
-	private int rightWB = 0;
-	private int leftWB = 0;
-	private int upWB = 0;
-	private int downWB = 0;
+	private boolean rightWB = false;
+	private boolean leftWB = false;
+	private boolean upWB = false;
+	private boolean downWB = false;
 	
 	Moving(Player player, Cenario cenario, JFrame jframe){
 		this.player = player;
 		this.cenario = cenario;
 		this.jframe = jframe;
-		Thread t = new Thread(this);
-		t.start();
 	}
 	
 	private void verifyWallsAndBombs(){
-		int bCount, wCount;
+		/*
+		 * Esse método precisa ser otimizado.
+		 * Há muitas comparações, muitos IFs e FORs.
+		 */
+		int wCount, bCount;
 
 		// Verifica onde há Paredes
 		for(wCount = 0; wCount < this.cenario.getWalls().size(); wCount++){
@@ -30,8 +32,7 @@ public class Moving implements KeyListener, Runnable{
 				(int)(this.cenario.getWalls().get(wCount).getRectangle().getX()) &&
 				(int)(this.player.getRectangle().getY()) ==
 				(int)(this.cenario.getWalls().get(wCount).getRectangle().getY())){
-				this.rightWB++;
-				System.out.println("wall/right");
+				this.rightWB = true;
 				continue;
 				}
 			// Verifica se há paredes na esquerda
@@ -39,8 +40,7 @@ public class Moving implements KeyListener, Runnable{
 				(int)(this.cenario.getWalls().get(wCount).getRectangle().getMaxX()) &&
 				(int)(this.player.getRectangle().getY()) ==
 				(int)(this.cenario.getWalls().get(wCount).getRectangle().getY())){
-				this.leftWB++;
-				System.out.println("wall/left");
+				this.leftWB = true;
 				continue;
 			}
 			// Verifica se há paredes em cima
@@ -48,8 +48,7 @@ public class Moving implements KeyListener, Runnable{
 				(int)(this.cenario.getWalls().get(wCount).getRectangle().getX()) &&
 				(int)(this.player.getRectangle().getY()) ==
 				(int)(this.cenario.getWalls().get(wCount).getRectangle().getMaxY())){
-				this.upWB++;
-				System.out.println("wall/up");
+				this.upWB = true;
 				continue;
 			}
 			// Verifica se há paredes em baixo
@@ -57,22 +56,19 @@ public class Moving implements KeyListener, Runnable{
 				(int)(this.cenario.getWalls().get(wCount).getRectangle().getX()) &&
 				(int)(this.player.getRectangle().getMaxY()) ==
 				(int)(this.cenario.getWalls().get(wCount).getRectangle().getY())){
-				this.downWB++;
-				System.out.println("wall/down");
+				this.downWB = true;
 				continue;
 			}
 		}
 		
 		// Verifica onde há bombas
 		for(bCount = 0; bCount < this.cenario.getBombs().size(); bCount++){
-			System.out.println("bomb verify");
 			// Verifica se há bomba na direita
 			if( (int)(this.player.getRectangle().getMaxX()) ==
 				(int)(this.cenario.getBombs().get(bCount).getRectangle().getX()) &&
 				(int)(this.player.getRectangle().getY()) ==
 				(int)(this.cenario.getBombs().get(bCount).getRectangle().getY())){
-				this.rightWB++;
-				System.out.println("bomb/right");
+				this.rightWB = true;
 				continue;
 			}
 			// Verifica se há bomba na esquerda
@@ -80,8 +76,7 @@ public class Moving implements KeyListener, Runnable{
 				(int)(this.cenario.getBombs().get(bCount).getRectangle().getMaxX()) &&
 				(int)(this.player.getRectangle().getY()) ==
 				(int)(this.cenario.getBombs().get(bCount).getRectangle().getY())){
-				this.leftWB++;
-				System.out.println("bomb/left");
+				this.leftWB = true;
 				continue;
 			}
 			// Verifica se há bomba em cima
@@ -89,8 +84,7 @@ public class Moving implements KeyListener, Runnable{
 				(int)(this.cenario.getBombs().get(bCount).getRectangle().getX()) &&
 				(int)(this.player.getRectangle().getY()) ==
 				(int)(this.cenario.getBombs().get(bCount).getRectangle().getMaxY())){
-				this.upWB++;
-				System.out.println("bomb/up");
+				this.upWB = true;
 				continue;
 			}
 			// Verifica se há bomba em baixo
@@ -98,51 +92,47 @@ public class Moving implements KeyListener, Runnable{
 				(int)(this.cenario.getBombs().get(bCount).getRectangle().getX()) &&
 				(int)(this.player.getRectangle().getMaxY()) ==
 				(int)(this.cenario.getBombs().get(bCount).getRectangle().getY())){
-				this.downWB++;
-				System.out.println("bomb/down");
+				this.downWB = true;
 				continue;
 			}
 		}
 	}
 	
 	public void keyPressed(KeyEvent e){
-		System.out.println(e.getKeyCode());
-		this.rightWB = 0;
-		this.leftWB = 0;
-		this.upWB = 0;
-		this.downWB = 0;
+		this.rightWB = false;
+		this.leftWB = false;
+		this.upWB = false;
+		this.downWB = false;
 		
 		//verifica onde há bombas e paredes
 		verifyWallsAndBombs();
 		
 		switch(e.getKeyCode()){
 			case 39: // Move Right when no wall and bomb are detected
-				if(this.rightWB == 0)
+				if(!this.rightWB)
 					this.player.goRight();
 				break;
 				
 			case 37: // Move Left when no wall and bomb are detected
-				if(this.leftWB == 0)
+				if(!this.leftWB)
 					this.player.goLeft();
 				break;
 				
 			case 38: // Move Up when no wall and bomb are detected
-				if(this.upWB == 0)
+				if(!this.upWB)
 					this.player.goUp();
 				break;
 				
 			case 40: // Move Down when no wall and bomb are detected
-				if(this.downWB == 0)
+				if(!this.downWB)
 					this.player.goDown();
 				break;
 			case 32: //Space to Plant a Bomb
 				try {
 					Bomb b = player.plantBomb();
-					b.whereAmI(cenario, jframe);
 					cenario.getBombs().add(b);
 					jframe.add(b.getJLabel(), 2);
-					Thread t = new Thread(b);
-					t.start();
+					//b.explode();
 				}
 				catch (MaxBombPlantedException e2) {
 					System.out.println("MaxBombPlanted!");
@@ -150,6 +140,7 @@ public class Moving implements KeyListener, Runnable{
 				}
 				break;
 			default:
+				System.out.println("default");
 		}
 	}
 	
@@ -158,13 +149,5 @@ public class Moving implements KeyListener, Runnable{
 	}
 	public void keyTyped(KeyEvent e){
 		
-	}
-
-	@Override
-	public void run() {/*
-		while(true){
-			if(this.cenario.getBombs().size() <= player.plantedBombs())
-				this.player.decreaseBombPlanted();
-		}*/
 	}
 }
