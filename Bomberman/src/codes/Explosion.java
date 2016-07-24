@@ -8,17 +8,46 @@ import javax.swing.JLabel;
 public class Explosion implements Runnable {
 	
 	private Rectangle rectangle;
+	private ImageIcon img;
 	private JLabel jlabel;
 	private boolean fadedOut;
 	private static int fireTime; // in milliseconds
 	
-	public Explosion(Point p, ImageIcon img){
-		this.setDefaultConfiguration(p, img);
+	public Explosion(Point p, String explosionType) throws InvalidExplosionTypeException{
+		this.setDefaultProperties(p, explosionType);
+		Thread thread = new Thread(this);
+		thread.start();
 	}
 	
-	public void setDefaultConfiguration(Point p, ImageIcon img){
-		this.rectangle = new Rectangle(p.x, p.x, img.getIconWidth(), img.getIconHeight());
-		this.jlabel = new JLabel(img);
+	private void setDefaultProperties(Point p, String explosionType) throws InvalidExplosionTypeException {
+		
+		switch(explosionType){
+			case "Central":
+				this.img = new ImageIcon(getClass().getResource("/images/centerExplosion.png"));
+				break;
+			case "Right" :
+				this.img = new ImageIcon(getClass().getResource("/images/rightExplosion.png"));
+				break;
+			case "Left" :
+				this.img = new ImageIcon(getClass().getResource("/images/leftExplosion.png")); 
+				break;
+			case "Up" :
+				this.img = new ImageIcon(getClass().getResource("/images/upperExplosion.png"));
+				break;
+			case "Down" :
+				this.img = new ImageIcon(getClass().getResource("/images/bottomExplosion.png"));
+				break;
+			case "Horizontal" :
+				this.img = new ImageIcon(getClass().getResource("/images/horizontalExplosion.png"));
+				break;
+			case "Vertical" :
+				this.img = new ImageIcon(getClass().getResource("/images/verticalExplosion.png"));
+				break;
+			default:
+				throw new InvalidExplosionTypeException(explosionType);
+		}
+		this.rectangle = new Rectangle(p.x, p.y, this.img.getIconWidth(), this.img.getIconHeight());
+		this.jlabel = new JLabel(this.img);
 		this.jlabel.setBounds(this.rectangle);
 		this.fadedOut = false;
 		Explosion.fireTime = 1000;
@@ -34,18 +63,19 @@ public class Explosion implements Runnable {
 	
 	// caso seja passado um valor negativo, o valor se transforma em zero
 	public static void setFireTime(int time){
-		if(time > 0)
+		if(time > 0){
 			Explosion.fireTime = time;
-		else
-			Explosion.fireTime = 0;
+			return;
+		}
+		Explosion.fireTime = 0;
 	}
 	
 	public int getFireTime(){
 		return Explosion.fireTime;
 	}
 
-	public boolean isFaded() {
-		return fadedOut;
+	public boolean isFadedOut() {
+		return this.fadedOut;
 	}
 	
 	@Override
@@ -57,6 +87,7 @@ public class Explosion implements Runnable {
 			e.printStackTrace();
 		}
 		this.fadedOut = true;
+		System.out.println("Explosion Faded Out!");
 	}
 
 }
