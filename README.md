@@ -1,18 +1,14 @@
 # Bomberman
 
------------------------ EM CONSTRUÇÃO ------------------------
-
 A construção do jogo deve ser baseada nos seguintes pontos:
 
 	1 - Criar um cenário onde o tamanho da janela é quem dita a quantidade de blocos que o cenario suporta. (Done)
 
 	2 - Sempre deixar 3 espaços iniciais no canto superior esquerdo e inferior direito para 2 jogadores. (Done)
 	
-		2.1 - A parte de IA ainda não será feita, pois ainda não cursei a cadeira de IA.
-    
-		2.2 - O 1º jogador decidirá se o 2º será bot ou outro jogador.
-
-			2.2.1 - Caso o 2º seja um jogador, os controles deverão ser configurados.
+		2.1 - O 1º jogador decidirá se o 2º será bot ou outro jogador.
+		
+		2.2 - Caso o 2º seja um jogador, os controles deverão ser configurados.
     	
 	3 - As paredes quebráveis (Breakable Walls) deverão dropar itens para melhoria da bomba ou do jogador.
 
